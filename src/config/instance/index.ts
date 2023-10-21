@@ -5,26 +5,24 @@ const headers = {};
 
 const instance = axios.create({
   baseURL: 'https://take-home-test-api.nutech-integrasi.app',
-  timeout: 1000,
+  timeout: 3000,
   headers,
 });
 
-// instance.interceptors.request.use(
-//   config => {
-//     const store = store.;
-//     const {access_token} = store.dataLogin.data;
-//     if (access_token) {
-//       // eslint-disable-next-line no-param-reassign
-//       config.headers.access_token = access_token;
-//     }
-//     return config;
-//   },
-//   error => Promise.reject(error),
-// );
+instance.interceptors.request.use(
+  config => {
+    const {token} = store.getState().auth;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => Promise.reject(error),
+);
 
-// instance.interceptors.response.use(
-//   response => response,
-//   error => Promise.reject(error),
-// );
+instance.interceptors.response.use(
+  response => response,
+  error => Promise.reject(error),
+);
 
 export default instance;

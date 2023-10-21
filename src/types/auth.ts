@@ -16,3 +16,8 @@ export interface LoginType {
   email: string;
   password: string;
 }
+
+export interface UpdateProfileType {
+  first_name: string;
+  last_name: string;
+}

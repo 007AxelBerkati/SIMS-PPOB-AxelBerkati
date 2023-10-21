@@ -30,7 +30,9 @@ const LoginScreen = ({navigation}: Props) => {
   const {loading} = useAppSelector(state => state.auth);
 
   const onSubmit = (dataLogin: LoginType) => {
-    dispatch(signIn(dataLogin));
+    dispatch(signIn(dataLogin)).then(() => {
+      navigation.replace('MainApp');
+    });
   };
 
   return (
