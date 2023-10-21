@@ -10,10 +10,11 @@ import {StatusBar} from 'react-native';
 
 import Navigation from './navigation';
 import {COLORS, SIZES} from './themes';
-import {Provider} from 'react-redux';
+import {Provider as StoreProvider} from 'react-redux';
 import {store} from './redux';
 import FlashMessage from 'react-native-flash-message';
 import {moderateScale} from 'react-native-size-matters';
+import {PaperProvider} from 'react-native-paper';
 
 function MainApp(): JSX.Element {
   return (
@@ -38,9 +39,11 @@ function MainApp(): JSX.Element {
 
 function App(): JSX.Element {
   return (
-    <Provider store={store}>
-      <MainApp />
-    </Provider>
+    <StoreProvider store={store}>
+      <PaperProvider>
+        <MainApp />
+      </PaperProvider>
+    </StoreProvider>
   );
 }
 

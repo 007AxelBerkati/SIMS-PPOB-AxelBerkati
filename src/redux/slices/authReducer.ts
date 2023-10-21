@@ -1,7 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {instance} from '../../config';
-import {showError, showSuccess, storeData} from '../../plugins';
-import {getProfile, login, register} from '../../services';
+import {removeData, showError, showSuccess, storeData} from '../../plugins';
+import {
+  getProfile,
+  login,
+  register,
+  updateProfile,
+  updateProfileImage,
+} from '../../services';
 import {LoginType, RegisterResponseType} from '../../types/auth';
 
 type authStateType = {
@@ -63,12 +69,46 @@ export const getDataProfile = createAsyncThunk(
   },
 );
 
+export const updateDataProfile = createAsyncThunk(
+  'auth/updateDataProfile',
+  async (values: any) => {
+    try {
+      const response = await updateProfile(values);
+      showSuccess('Berhasil update profile');
+      return response.data.data;
+    } catch (error: any) {
+      showError(error.response.data.message);
+      return error.response.data.message;
+    }
+  },
+);
+
+export const updateDataProfileImage = createAsyncThunk(
+  'auth/updateDataProfileImage',
+  async (values: any) => {
+    try {
+      console.log('values', values);
+      const response = await updateProfileImage(values.image);
+      showSuccess('Berhasil update profile');
+      return response.data.data;
+    } catch (error: any) {
+      showError(error.response.data.message);
+      return error.response.data.message;
+    }
+  },
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     setToken(state, action) {
       state.token = action.payload;
+    },
+    signOut(state) {
+      state.token = '';
+      state.dataProfile = {};
+      removeData('token');
     },
     // ==> normal reducer functions go here
   },
@@ -105,10 +145,20 @@ const authSlice = createSlice({
       })
       .addCase(getDataProfile.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(updateDataProfile.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(updateDataProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.dataProfile = action.payload || {};
+      })
+      .addCase(updateDataProfile.rejected, (state, action) => {
+        state.loading = false;
       });
   },
 });
 
-export const {setToken} = authSlice.actions;
+export const {setToken, signOut} = authSlice.actions;
 
 export default authSlice.reducer;

@@ -4,6 +4,7 @@ import {Avatar} from 'react-native-paper';
 import {ICLogo, ICProfilePhoto, ICProfilePhoto1} from '../../assets';
 import {moderateScale} from 'react-native-size-matters';
 import {COLORS} from '../../themes';
+import {checkImage} from '../../utils/checkImage';
 
 type Props = {
   source?: any;
@@ -18,13 +19,18 @@ const HeaderHome = ({source}: Props) => {
       </View>
       <Avatar.Image
         source={
-          source
+          checkImage(source)
             ? {
                 uri: source,
               }
             : ICProfilePhoto1
         }
         size={moderateScale(50)}
+        style={{
+          backgroundColor: COLORS.background.primary,
+          borderWidth: 1,
+          borderColor: COLORS.border.primary,
+        }}
       />
     </View>
   );

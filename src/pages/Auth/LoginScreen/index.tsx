@@ -56,7 +56,6 @@ const LoginScreen = ({navigation}: Props) => {
             errors,
             isValid,
             values,
-
             touched,
             handleBlur,
             dirty,

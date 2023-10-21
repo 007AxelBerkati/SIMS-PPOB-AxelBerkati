@@ -24,7 +24,7 @@ type Props = {};
 const HomeScreen = (props: Props) => {
   const dispatch = useAppDispatch();
 
-  const {dataProfile} = useAppSelector(state => state.auth);
+  const {dataProfile, loading} = useAppSelector(state => state.auth);
   const {dataBanner, dataServices} = useAppSelector(state => state.information);
   const {dataBalance} = useAppSelector(state => state.transaction);
 
@@ -37,11 +37,16 @@ const HomeScreen = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={{flex: 1}}
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={false}>
         <HeaderHome source={dataProfile?.profile_image} />
         <Text style={styles.welcome}>Selamat datang, </Text>
         <Text style={styles.name}>
-          {dataProfile?.first_name + ' ' + dataProfile?.last_name}
+          {loading
+            ? ''
+            : dataProfile?.first_name + ' ' + dataProfile?.last_name}
         </Text>
         <Gap height={moderateScale(30)} />
         <CardSaldo balance={dataBalance} />

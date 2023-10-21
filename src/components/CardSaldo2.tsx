@@ -1,64 +1,46 @@
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 import React, {useState} from 'react';
-import {IMGBackgroundSaldo} from '../../assets';
+import {IMGBackgroundSaldo} from '../assets';
 import {moderateScale} from 'react-native-size-matters';
-import {COLORS, fontSize} from '../../themes';
+import {COLORS, fontSize} from '../themes';
 import {IconButton} from 'react-native-paper';
 
 type Props = {
   balance: number;
 };
 
-const CardSaldo = ({balance}: Props) => {
-  const [lihatSaldo, setLihatSaldo] = useState(false);
-
+const CardSaldo2 = ({balance}: Props) => {
   return (
     <View style={styles.container}>
       <ImageBackground
         source={IMGBackgroundSaldo}
         style={styles.imageBackground}>
         <View style={{marginLeft: moderateScale(30)}}>
-          <Text style={styles.titleSaldo}>Saldo</Text>
-          <Text style={styles.saldo}>
-            {lihatSaldo
-              ? `Rp ${balance.toLocaleString('id-ID')}`
-              : `Rp  * * * * * * *`}
-          </Text>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.lihatSaldo}>Lihat Saldo</Text>
-            <IconButton
-              icon={lihatSaldo ? 'eye-outline' : 'eye-off'}
-              onPress={() => {
-                setLihatSaldo(!lihatSaldo);
-              }}
-              size={moderateScale(20)}
-              iconColor="white"
-            />
-          </View>
+          <Text style={styles.titleSaldo}>Saldo anda</Text>
+          <Text style={styles.saldo}>Rp {balance.toLocaleString('id-ID')}</Text>
         </View>
       </ImageBackground>
     </View>
   );
 };
 
-export default CardSaldo;
+export default CardSaldo2;
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: moderateScale(170),
   },
   imageBackground: {
     width: '100%',
-    height: moderateScale(170),
     borderRadius: moderateScale(20),
     overflow: 'hidden',
     justifyContent: 'center',
+    paddingVertical: moderateScale(20),
   },
 
   titleSaldo: {
     fontSize: fontSize.xxlarge,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: COLORS.text.secondary,
     marginBottom: moderateScale(10),
   },

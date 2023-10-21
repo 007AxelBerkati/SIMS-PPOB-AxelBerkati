@@ -14,7 +14,12 @@ export const register = async (values: RegisterResponseType) =>
 export const getProfile = async () => await instance.get('/profile');
 
 export const updateProfile = async (values: UpdateProfileType) =>
-  await instance.put('/profile', values);
+  await instance.put('/profile/update', values);
 
 export const updateProfileImage = async (values: any) =>
-  await instance.put('/profile/image', values);
+  await instance.put('/profile/image', values, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+    },
+  });

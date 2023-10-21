@@ -4,8 +4,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {AkunScreen, HomeScreen, TopUpScreen, TransaksiScreen} from '../pages';
-import {COLORS} from '../themes';
+import {COLORS, fontSize} from '../themes';
 import {moderateScale} from 'react-native-size-matters';
+import {Text, View, TouchableOpacity} from 'react-native';
+import {IconButton} from 'react-native-paper';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,6 +17,7 @@ const MainApp = ({navigation}: any) => {
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: COLORS.background.secondary,
+
         headerShown: false,
         tabBarStyle: {
           height: 60,
@@ -51,6 +55,26 @@ const MainApp = ({navigation}: any) => {
               size={24}
             />
           ),
+          headerShown: true,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{flexDirection: 'row', alignItems: 'center'}}>
+              <IconButton icon={'arrow-left'} />
+              <Text
+                style={{fontSize: fontSize.large, color: COLORS.text.primary}}>
+                kembali
+              </Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: 'Top Up',
+          headerShadowVisible: false,
+          headerTitleStyle: {
+            fontSize: fontSize.xlarge,
+            fontWeight: 'bold',
+            color: COLORS.text.primary,
+          },
+          headerTitleAlign: 'center',
         }}
       />
       <Tab.Screen
@@ -65,6 +89,26 @@ const MainApp = ({navigation}: any) => {
               size={24}
             />
           ),
+          headerShown: true,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{flexDirection: 'row', alignItems: 'center'}}>
+              <IconButton icon={'arrow-left'} />
+              <Text
+                style={{fontSize: fontSize.large, color: COLORS.text.primary}}>
+                kembali
+              </Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: 'Transaksi',
+          headerShadowVisible: false,
+          headerTitleStyle: {
+            fontSize: fontSize.xlarge,
+            fontWeight: 'bold',
+            color: COLORS.text.primary,
+          },
+          headerTitleAlign: 'center',
         }}
       />
 
@@ -80,6 +124,26 @@ const MainApp = ({navigation}: any) => {
               size={24}
             />
           ),
+          headerShown: true,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{flexDirection: 'row', alignItems: 'center'}}>
+              <IconButton icon={'arrow-left'} />
+              <Text
+                style={{fontSize: fontSize.large, color: COLORS.text.primary}}>
+                kembali
+              </Text>
+            </TouchableOpacity>
+          ),
+          headerTitle: 'Akun',
+          headerShadowVisible: false,
+          headerTitleStyle: {
+            fontSize: fontSize.xlarge,
+            fontWeight: 'bold',
+            color: COLORS.text.primary,
+          },
+          headerTitleAlign: 'center',
         }}
       />
     </Tab.Navigator>
