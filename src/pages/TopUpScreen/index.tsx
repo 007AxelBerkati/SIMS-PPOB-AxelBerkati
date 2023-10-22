@@ -127,6 +127,7 @@ const TopUpScreen = ({navigation}: Props) => {
               <CustomDialog
                 handleSubmit={handleSubmit}
                 isDialogVisible={isDialogVisible}
+                titleAction="Top Up"
                 setIsDialogVisible={setIsDialogVisible}
                 top_up_amount={Number(values.top_up_amount)}
                 title={`Anda yakin untuk Top Up`}

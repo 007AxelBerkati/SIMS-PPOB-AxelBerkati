@@ -15,6 +15,7 @@ type Props = {
   type?: 'success' | 'failed' | '';
   navigation?: any;
   title: any;
+  titleAction?: string;
 };
 
 const CustomDialog = ({
@@ -25,6 +26,7 @@ const CustomDialog = ({
   type = '',
   title,
   navigation,
+  titleAction,
 }: Props) => {
   const renderImage = () => {
     switch (type) {
@@ -83,7 +85,7 @@ const CustomDialog = ({
         return (
           <>
             <Text onPress={handleSubmit} style={styles.ya}>
-              Ya, Lanjutkan Top Up
+              Ya, Lanjutkan {titleAction}
             </Text>
             <Gap height={moderateScale(20)} />
             <Text

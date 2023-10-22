@@ -79,6 +79,7 @@ const PembayaranScreen = ({route, navigation}: Props) => {
             }}
             isDialogVisible={isDialogVisible}
             setIsDialogVisible={setIsDialogVisible}
+            titleAction="Bayar"
             top_up_amount={Number(data.service_tariff)}
             title={`Beli ${data.service_name} sebesar`}
           />
