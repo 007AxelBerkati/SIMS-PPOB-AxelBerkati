@@ -27,12 +27,10 @@ const PembayaranScreen = ({route, navigation}: Props) => {
   const [isDialogSuccessVisible, setIsDialogSuccessVisible] = useState(false);
   const [isDialogFailedVisible, setIsDialogFailedVisible] = useState(false);
 
-  const {dataTransaction} = useAppSelector(state => state.transaction);
-
   const handleSubmit = () => {
     dispatch(transactionPembayaran({service_code: data.service_code}))
-      .then(() => {
-        if (dataTransaction === 'Saldo tidak mencukupi') {
+      .then(res => {
+        if (res?.payload === 'Saldo tidak mencukupi') {
           setIsDialogVisible(false);
           setIsDialogFailedVisible(true);
           return;
