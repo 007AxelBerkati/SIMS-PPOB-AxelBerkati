@@ -87,9 +87,7 @@ export const updateDataProfileImage = createAsyncThunk(
   'auth/updateDataProfileImage',
   async (values: any) => {
     try {
-      console.log('values', values);
-      const response = await updateProfileImage(values.image);
-      showSuccess('Berhasil update profile');
+      const response = await updateProfileImage(values);
       return response.data.data;
     } catch (error: any) {
       return error.response.data;

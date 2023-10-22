@@ -1,3 +1,4 @@
+import FormData from 'form-data';
 import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
@@ -9,14 +10,17 @@ import CustomTextInput from '../../components/CustomTextInput';
 import ErrorText from '../../components/ErrorText';
 import Gap from '../../components/Gap';
 import {UploadPhoto} from '../../components/akun';
-import {signOut, updateDataProfile, updateDataProfileImage} from '../../redux';
+import {showSuccess} from '../../plugins';
+import {
+  getDataProfile,
+  signOut,
+  updateDataProfile,
+  updateDataProfileImage,
+} from '../../redux';
 import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {COLORS} from '../../themes';
 import {inputUpdateProfileType} from '../../types/auth';
 import {updateProfileSchema} from '../../utils/validation';
-import FormData from 'form-data';
-import {showMessage} from 'react-native-flash-message';
-import {showSuccess} from '../../plugins';
 
 type Props = {
   navigation: any;
@@ -46,13 +50,15 @@ const AkunScreen = ({navigation}: Props) => {
     );
     const formData = new FormData();
 
-    formData.append('file', dataUpdateProfile.image);
-    formData.append('File', {
+    formData.append('file', {
       uri: dataUpdateProfile.image,
       type: 'image/jpeg',
       name: 'profile.jpg',
     });
-    dispatch(updateDataProfileImage(formData));
+
+    dispatch(updateDataProfileImage(formData)).then(() => {
+      dispatch(getDataProfile());
+    });
     setEditable(false);
   };
 
@@ -66,7 +72,7 @@ const AkunScreen = ({navigation}: Props) => {
       if (image.size / 1024 > 100) {
         showSuccess('Ukuran gambar terlalu besar, maksimal 100kb');
       } else {
-        setFieldValue('image', image.path);
+        setFieldValue('image', image.path, true);
       }
     } catch (err: any) {
       if (err.message !== 'User cancelled image selection') {
