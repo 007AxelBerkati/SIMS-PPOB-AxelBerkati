@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     height: moderateScale(50),
     borderRadius: moderateScale(10),
-    backgroundColor: COLORS.disable.background,
+    backgroundColor: COLORS.outlineInput,
   },
   disableText: {
     fontSize: fontSize.large,
-    color: COLORS.disable.text,
+    color: COLORS.text.secondary,
     paddingVertical: moderateScale(2),
     textAlign: 'center',
   },

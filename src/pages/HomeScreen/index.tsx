@@ -19,9 +19,11 @@ import {
 import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {COLORS, fontSize} from '../../themes';
 
-type Props = {};
+type Props = {
+  navigation: any;
+};
 
-const HomeScreen = (props: Props) => {
+const HomeScreen = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
 
   const {dataProfile, loading} = useAppSelector(state => state.auth);
@@ -53,11 +55,15 @@ const HomeScreen = (props: Props) => {
         <View>
           <FlatList
             data={dataServices}
+            scrollEnabled={false}
             keyExtractor={(item: any) => item.service_code}
             renderItem={({item}) => (
               <CardServices
                 source={item.service_icon}
                 title={item.service_code}
+                onPress={() => {
+                  navigation.navigate('PembayaranScreen', {data: item});
+                }}
               />
             )}
             ItemSeparatorComponent={() => <Gap height={moderateScale(30)} />}

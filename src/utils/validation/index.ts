@@ -26,7 +26,7 @@ export const signupSchema = Yup.object().shape({
       'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character',
     ),
   konfirmasi_password: Yup.string()
-    .required('Tolong Isi Password Anda')
+    .required('Password Tidak Sama')
     .trim()
     .oneOf([Yup.ref('buat_password'), null], 'Password Tidak Sama'),
 });

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
   titleSaldo: {
     fontSize: fontSize.xxlarge,
-    fontWeight: '500',
+    fontWeight: '400',
     color: COLORS.text.secondary,
     marginBottom: moderateScale(10),
   },

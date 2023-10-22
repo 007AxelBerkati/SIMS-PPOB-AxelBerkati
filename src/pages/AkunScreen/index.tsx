@@ -15,13 +15,15 @@ import {COLORS} from '../../themes';
 import {inputUpdateProfileType} from '../../types/auth';
 import {updateProfileSchema} from '../../utils/validation';
 import FormData from 'form-data';
+import {showMessage} from 'react-native-flash-message';
+import {showSuccess} from '../../plugins';
 
 type Props = {
   navigation: any;
 };
 
-const DEFAULT_HEIGHT = moderateScale(400);
-const DEFAULT_WITH = moderateScale(400);
+const DEFAULT_HEIGHT = moderateScale(200);
+const DEFAULT_WITH = moderateScale(200);
 const defaultPickerOptions = {
   cropping: true,
   height: DEFAULT_HEIGHT,
@@ -36,7 +38,6 @@ const AkunScreen = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
 
   const onSubmit = (dataUpdateProfile: inputUpdateProfileType) => {
-    console.log(dataUpdateProfile);
     dispatch(
       updateDataProfile({
         first_name: dataUpdateProfile.first_name,
@@ -46,7 +47,7 @@ const AkunScreen = ({navigation}: Props) => {
     const formData = new FormData();
 
     formData.append('file', dataUpdateProfile.image);
-    formData.append('file', {
+    formData.append('File', {
       uri: dataUpdateProfile.image,
       type: 'image/jpeg',
       name: 'profile.jpg',
@@ -61,7 +62,12 @@ const AkunScreen = ({navigation}: Props) => {
   ) => {
     try {
       const image = await ImagePicker.openPicker(options);
-      setFieldValue('image', image.path);
+
+      if (image.size / 1024 > 100) {
+        showSuccess('Ukuran gambar terlalu besar, maksimal 100kb');
+      } else {
+        setFieldValue('image', image.path);
+      }
     } catch (err: any) {
       if (err.message !== 'User cancelled image selection') {
         console.error(err);

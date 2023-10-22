@@ -1,38 +1,35 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  ScrollView,
-  Image,
-} from 'react-native';
+import {Formik} from 'formik';
 import React, {useState} from 'react';
+import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Portal, Provider} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {moderateScale} from 'react-native-size-matters';
+import {dataTopUp} from '../../assets';
 import CardSaldo2 from '../../components/CardSaldo2';
+import CustomButton from '../../components/CustomButton';
+import CustomDialog from '../../components/CustomDialog';
+import CustomTextInput from '../../components/CustomTextInput';
+import ErrorText from '../../components/ErrorText';
+import Gap from '../../components/Gap';
+import {CardTopUp} from '../../components/topUp';
+import {topUpBalance} from '../../redux';
 import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {COLORS, fontSize} from '../../themes';
-import Gap from '../../components/Gap';
-import CustomTextInput from '../../components/CustomTextInput';
-import {Formik} from 'formik';
-import {topUpSchema} from '../../utils/validation';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import CustomButton from '../../components/CustomButton';
-import ErrorText from '../../components/ErrorText';
-import {CardTopUp} from '../../components/topUp';
-import {ICLogo, dataTopUp} from '../../assets';
 import {TopUpType} from '../../types/transaction';
-import {topUpBalance} from '../../redux';
-import {Portal, Provider, Dialog, Paragraph} from 'react-native-paper';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+import {topUpSchema} from '../../utils/validation';
 
-type Props = {};
+type Props = {
+  navigation: any;
+};
 
 const TopUpScreen = ({navigation}: Props) => {
   const {dataBalance} = useAppSelector(state => state.transaction);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [isDialogSuccessVisible, setIsDialogSuccessVisible] = useState(false);
   const [isDialogFailedVisible, setIsDialogFailedVisible] = useState(false);
+
   const dispatch = useAppDispatch();
+
   const onSubmit = (dataTopUp: TopUpType) => {
     dispatch(topUpBalance(dataTopUp))
       .then(() => {
@@ -94,6 +91,7 @@ const TopUpScreen = ({navigation}: Props) => {
                     <FlatList
                       data={dataTopUp}
                       keyExtractor={(item: any) => item.id}
+                      scrollEnabled={false}
                       renderItem={({item}) => (
                         <CardTopUp
                           nominal={item.nominal}
@@ -125,111 +123,39 @@ const TopUpScreen = ({navigation}: Props) => {
 
                 <Gap height={moderateScale(20)} />
               </ScrollView>
-              <Dialog
-                visible={isDialogVisible}
-                style={{
-                  backgroundColor: COLORS.background.primary,
-                  borderRadius: 5,
+
+              <CustomDialog
+                handleSubmit={handleSubmit}
+                isDialogVisible={isDialogVisible}
+                setIsDialogVisible={setIsDialogVisible}
+                top_up_amount={Number(values.top_up_amount)}
+                title={`Anda yakin untuk Top Up`}
+              />
+
+              <CustomDialog
+                handleSubmit={() => {
+                  setIsDialogFailedVisible(false);
+                  navigation.replace('MainApp');
                 }}
-                onDismiss={() => setIsDialogVisible(false)}>
-                <Dialog.Content>
-                  <Image source={ICLogo} style={styles.imageLogo} />
-                  <Gap height={moderateScale(20)} />
-                  <Text style={styles.textDialog}>
-                    Anda yakin untuk Top Up sebesar
-                  </Text>
-                  <Text style={styles.nominal}>Rp{values.top_up_amount} ?</Text>
-                </Dialog.Content>
-                <Dialog.Actions
-                  style={{
-                    flexDirection: 'column',
-                    justifyContent: 'space-around',
-                    marginBottom: 20,
-                  }}>
-                  <Text onPress={handleSubmit} style={styles.ya}>
-                    Ya, Lanjutkan Top Up
-                  </Text>
-                  <Gap height={moderateScale(20)} />
-                  <Text
-                    onPress={() => {
-                      setIsDialogVisible(false);
-                    }}
-                    style={styles.tidak}>
-                    Batalkan
-                  </Text>
-                </Dialog.Actions>
-              </Dialog>
-              <Dialog
-                visible={isDialogSuccessVisible}
-                style={{
-                  backgroundColor: COLORS.background.primary,
-                  borderRadius: 5,
+                type="failed"
+                isDialogVisible={isDialogFailedVisible}
+                setIsDialogVisible={setIsDialogFailedVisible}
+                top_up_amount={Number(values.top_up_amount)}
+                navigation={navigation}
+                title={`Top Up sebesar`}
+              />
+              <CustomDialog
+                handleSubmit={() => {
+                  setIsDialogSuccessVisible(false);
+                  navigation.replace('MainApp');
                 }}
-                onDismiss={() => setIsDialogSuccessVisible(false)}>
-                <Dialog.Content>
-                  <View style={styles.success}>
-                    <FeatherIcon
-                      name="check"
-                      size={moderateScale(25)}
-                      color={COLORS.background.primary}
-                    />
-                  </View>
-                  <Gap height={moderateScale(20)} />
-                  <Text style={styles.textDialog}>Top Up sebesar</Text>
-                  <Text style={styles.nominal}>Rp{values.top_up_amount}</Text>
-                  <Text style={styles.textDialog}>berhasil</Text>
-                </Dialog.Content>
-                <Dialog.Actions
-                  style={{
-                    flexDirection: 'column',
-                    marginBottom: 20,
-                  }}>
-                  <Text
-                    onPress={() => {
-                      setIsDialogSuccessVisible(false);
-                      navigation.replace('MainApp');
-                    }}
-                    style={styles.ya}>
-                    Kembali ke Beranda
-                  </Text>
-                </Dialog.Actions>
-              </Dialog>
-              <Dialog
-                visible={isDialogFailedVisible}
-                style={{
-                  backgroundColor: COLORS.background.primary,
-                  borderRadius: 5,
-                }}
-                onDismiss={() => setIsDialogFailedVisible(false)}>
-                <Dialog.Content>
-                  <View style={styles.failed}>
-                    <FeatherIcon
-                      name="x"
-                      size={moderateScale(25)}
-                      color={COLORS.background.primary}
-                    />
-                  </View>
-                  <Gap height={moderateScale(20)} />
-                  <Text style={styles.textDialog}>Top Up sebesar</Text>
-                  <Text style={styles.nominal}>Rp{values.top_up_amount}</Text>
-                  <Text style={styles.textDialog}>gagal</Text>
-                </Dialog.Content>
-                <Dialog.Actions
-                  style={{
-                    flexDirection: 'column',
-                    justifyContent: 'space-around',
-                    marginBottom: 20,
-                  }}>
-                  <Text
-                    onPress={() => {
-                      setIsDialogFailedVisible(false);
-                      navigation.replace('MainApp');
-                    }}
-                    style={styles.ya}>
-                    Kembali ke Beranda
-                  </Text>
-                </Dialog.Actions>
-              </Dialog>
+                type="success"
+                isDialogVisible={isDialogSuccessVisible}
+                setIsDialogVisible={setIsDialogSuccessVisible}
+                top_up_amount={Number(values.top_up_amount)}
+                navigation={navigation}
+                title={`Top Up sebesar`}
+              />
             </View>
           )}
         </Formik>

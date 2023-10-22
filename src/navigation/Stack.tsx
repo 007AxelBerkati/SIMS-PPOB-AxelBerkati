@@ -11,6 +11,7 @@ import {Text, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {IconButton} from 'react-native-paper';
 import {COLORS, fontSize} from '../themes';
+import {moderateScale} from 'react-native-size-matters';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +35,11 @@ function Router() {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{flexDirection: 'row', alignItems: 'center'}}>
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: moderateScale(-16),
+              }}>
               <IconButton icon={'arrow-left'} />
               <Text
                 style={{fontSize: fontSize.large, color: COLORS.text.primary}}>
@@ -42,13 +47,14 @@ function Router() {
               </Text>
             </TouchableOpacity>
           ),
-          headerTitle: 'Top Up',
+          headerTitle: 'Pembayaran',
           headerShadowVisible: false,
           headerTitleStyle: {
             fontSize: fontSize.xlarge,
             fontWeight: 'bold',
             color: COLORS.text.primary,
           },
+
           headerTitleAlign: 'center',
         }}
       />

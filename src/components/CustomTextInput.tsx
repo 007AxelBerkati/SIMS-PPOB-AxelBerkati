@@ -27,7 +27,7 @@ function CustomTextInput({
   leftIcon = 'at',
   ...props
 }: Props) {
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(true);
   return (
     <View>
       <TextInput
@@ -50,9 +50,9 @@ function CustomTextInput({
         right={
           secureTextEntry ? (
             <TextInput.Icon
-              icon={passwordVisible ? 'eye-off' : 'eye-outline'}
+              icon={passwordVisible ? 'eye-outline' : 'eye-off'}
               onPress={() => setPasswordVisible(!passwordVisible)}
-              color={passwordVisible ? COLORS.danger : COLORS.text.placeHolder}
+              color={passwordVisible ? COLORS.text.placeHolder : COLORS.danger}
             />
           ) : null
         }

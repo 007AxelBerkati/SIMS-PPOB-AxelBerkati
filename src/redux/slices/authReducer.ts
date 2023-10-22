@@ -16,6 +16,7 @@ type authStateType = {
   errorLogin: string;
   errorRegister: string;
   dataProfile: any;
+  errorProfile: string;
 };
 
 const initialState: authStateType = {
@@ -24,6 +25,7 @@ const initialState: authStateType = {
   dataProfile: {},
   errorLogin: '',
   errorRegister: '',
+  errorProfile: '',
 };
 
 export const signIn = createAsyncThunk(
@@ -63,8 +65,7 @@ export const getDataProfile = createAsyncThunk(
       const response = await getProfile();
       return response.data.data;
     } catch (error: any) {
-      showError(error.response.data.message);
-      return error.response.data.message;
+      return error.response.data;
     }
   },
 );
@@ -77,7 +78,6 @@ export const updateDataProfile = createAsyncThunk(
       showSuccess('Berhasil update profile');
       return response.data.data;
     } catch (error: any) {
-      showError(error.response.data.message);
       return error.response.data.message;
     }
   },
@@ -92,8 +92,7 @@ export const updateDataProfileImage = createAsyncThunk(
       showSuccess('Berhasil update profile');
       return response.data.data;
     } catch (error: any) {
-      showError(error.response.data.message);
-      return error.response.data.message;
+      return error.response.data;
     }
   },
 );
@@ -144,6 +143,9 @@ const authSlice = createSlice({
         state.dataProfile = action.payload || {};
       })
       .addCase(getDataProfile.rejected, (state, action) => {
+        console.log('action', action.error);
+
+        state.errorProfile = action.error.message || '';
         state.loading = false;
       })
       .addCase(updateDataProfile.pending, (state, action) => {

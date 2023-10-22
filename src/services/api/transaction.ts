@@ -7,4 +7,4 @@ export const transaction = async (values: any) =>
   await instance.post('/transaction', values);
 
 export const transactionHistory = async (params: any) =>
-  await instance.get(`/transaction${params}`);
+  await instance.get(`/transaction/history${params}`);
